@@ -444,7 +444,7 @@ function ResultScreen({
   }
 
   function handleViewPrints() {
-    window.open("https://woodin.com", "_blank");
+    window.open("https://woodinfashion.com", "_blank");
   }
 
   return (
