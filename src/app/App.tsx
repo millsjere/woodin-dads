@@ -5,6 +5,15 @@ import { WoodinLogo } from "./components/WoodinLogo";
 import { AfricanPatternBg } from "./components/AfricanPattern";
 import { matchShade, type WoodinShade } from "./components/shades-data";
 
+// Map shade IDs to card image paths
+const shadeCardMap: Record<string, string> = {
+  "azure-anchor": "/src/cards/Father's Day Card1-azure.jpeg",
+  "terra-firma": "/src/cards/Father's Day Card1-terra.jpeg",
+  "golden-glow": "/src/cards/Father's Day Card1-golden.jpeg",
+  "crimson-core": "/src/cards/Father's Day Card1-crimson.jpeg",
+  "monochrome-mystery": "/src/cards/Father's Day Card-monochrome.jpeg",
+};
+
 type Stage = "splash" | "input" | "revealing" | "result";
 
 function SplashScreen() {
@@ -272,216 +281,45 @@ function ResultScreen({
   const navigate = useNavigate();
   const [cardVisible, setCardVisible] = useState(false);
   const [showCardModal, setShowCardModal] = useState(false);
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const modalCanvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
     const timer = setTimeout(() => setCardVisible(true), 400);
     return () => clearTimeout(timer);
   }, []);
 
-  function drawCardToCanvas(canvas: HTMLCanvasElement) {
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
-
-    const W = 800;
-    const H = 1100;
-    canvas.width = W;
-    canvas.height = H;
-
-    // Background
-    ctx.fillStyle = "#1C0A00";
-    ctx.fillRect(0, 0, W, H);
-
-    // Pattern overlay
-    for (let x = 0; x < W; x += 40) {
-      for (let y = 0; y < H; y += 40) {
-        ctx.strokeStyle = "rgba(201,137,58,0.08)";
-        ctx.lineWidth = 1;
-        ctx.beginPath();
-        ctx.moveTo(x + 20, y);
-        ctx.lineTo(x + 40, y + 20);
-        ctx.lineTo(x + 20, y + 40);
-        ctx.lineTo(x, y + 20);
-        ctx.closePath();
-        ctx.stroke();
-      }
-    }
-
-    // Shade color bar at top
-    const grad = ctx.createLinearGradient(0, 0, W, 0);
-    grad.addColorStop(0, shade.color);
-    grad.addColorStop(1, shade.colorSecondary);
-    ctx.fillStyle = grad;
-    ctx.fillRect(0, 0, W, 12);
-
-    // Gold top ornament
-    ctx.fillStyle = "#C9893A";
-    ctx.font = "bold 14px Arial";
-    ctx.textAlign = "center";
-    ctx.fillText("◆ ◆ ◆", W / 2, 40);
-
-    // Woodin branding
-    ctx.fillStyle = "#C9893A";
-    ctx.font = "600 13px Arial";
-    ctx.letterSpacing = "4px";
-    ctx.textAlign = "center";
-    ctx.fillText("WOODIN", W / 2, 80);
-
-    ctx.fillStyle = "rgba(201,137,58,0.4)";
-    ctx.fillRect(W / 2 - 100, 95, 200, 1);
-
-    // Shade color circle
-    const circleGrad = ctx.createRadialGradient(W / 2, 230, 10, W / 2, 230, 110);
-    circleGrad.addColorStop(0, shade.colorSecondary);
-    circleGrad.addColorStop(1, shade.color);
-    ctx.fillStyle = circleGrad;
-    ctx.beginPath();
-    ctx.arc(W / 2, 230, 110, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.strokeStyle = "rgba(201,137,58,0.5)";
-    ctx.lineWidth = 2;
-    ctx.stroke();
-
-    // Percentage text in circle
-    ctx.fillStyle = "#1C0A00";
-    ctx.font = "bold 48px Arial";
-    ctx.textAlign = "center";
-    ctx.fillText(`${percentage}%`, W / 2, 245);
-    ctx.font = "14px Arial";
-    ctx.fillText("match", W / 2, 270);
-
-    // Shade name
-    ctx.fillStyle = "#F5E6D0";
-    ctx.font = "bold 42px serif";
-    ctx.textAlign = "center";
-    ctx.fillText(shade.name, W / 2, 390);
-
-    // Tagline
-    ctx.fillStyle = "#C9893A";
-    ctx.font = "italic 22px serif";
-    ctx.textAlign = "center";
-    ctx.fillText(`— ${shade.tagline} —`, W / 2, 430);
-
-    // Divider
-    ctx.fillStyle = "rgba(201,137,58,0.35)";
-    ctx.fillRect(W / 2 - 120, 455, 240, 1);
-
-    // Description - word wrap
-    ctx.fillStyle = "#B8965A";
-    ctx.font = "18px Arial";
-    ctx.textAlign = "center";
-    const words = shade.description.split(" ");
-    let line = "";
-    let lineY = 495;
-    const lineHeight = 30;
-    const maxWidth = 640;
-    for (const word of words) {
-      const testLine = line + word + " ";
-      if (ctx.measureText(testLine).width > maxWidth && line !== "") {
-        ctx.fillText(line.trim(), W / 2, lineY);
-        line = word + " ";
-        lineY += lineHeight;
-      } else {
-        line = testLine;
-      }
-    }
-    ctx.fillText(line.trim(), W / 2, lineY);
-
-    // Traits pills
-    lineY += 60;
-    ctx.fillStyle = "#C9893A";
-    ctx.font = "bold 13px Arial";
-    const pillW = 130;
-    const startX = W / 2 - ((shade.traits.length * (pillW + 12)) / 2);
-    shade.traits.forEach((trait, i) => {
-      const px = startX + i * (pillW + 12);
-      ctx.strokeStyle = "rgba(201,137,58,0.5)";
-      ctx.lineWidth = 1;
-      ctx.beginPath();
-      ctx.roundRect(px, lineY - 22, pillW, 32, 16);
-      ctx.stroke();
-      ctx.fillStyle = "rgba(201,137,58,0.15)";
-      ctx.fill();
-      ctx.fillStyle = "#C9893A";
-      ctx.textAlign = "center";
-      ctx.fillText(trait, px + pillW / 2, lineY);
-    });
-
-    // Divider
-    lineY += 60;
-    ctx.fillStyle = "rgba(201,137,58,0.25)";
-    ctx.fillRect(W / 2 - 60, lineY, 120, 1);
-
-    // Happy Fathers Day message
-    lineY += 50;
-    ctx.fillStyle = "#F5E6D0";
-    ctx.font = "bold 32px serif";
-    ctx.textAlign = "center";
-    ctx.fillText("Happy Father's Day", W / 2, lineY);
-
-    lineY += 42;
-    ctx.fillStyle = "#B8965A";
-    ctx.font = "18px Arial";
-    ctx.fillText("Thank you for every shade of love you give.", W / 2, lineY);
-
-    // Bottom bar
-    const bottomGrad = ctx.createLinearGradient(0, H - 12, W, H - 12);
-    bottomGrad.addColorStop(0, shade.color);
-    bottomGrad.addColorStop(1, shade.colorSecondary);
-    ctx.fillStyle = bottomGrad;
-    ctx.fillRect(0, H - 12, W, 12);
-
-    // Bottom woodin
-    ctx.fillStyle = "rgba(201,137,58,0.4)";
-    ctx.font = "500 11px Arial";
-    ctx.textAlign = "center";
-    ctx.fillText("woodin.com  •  #ShadesOfADad", W / 2, H - 25);
-  }
 
   function handleDownloadCard() {
-    const canvas = modalCanvasRef.current;
-    if (!canvas) return;
-    drawCardToCanvas(canvas);
     setShowCardModal(true);
   }
 
   function handleDownloadCardFile() {
-    const canvas = modalCanvasRef.current;
-    if (!canvas) {
-      console.error("Canvas ref not found");
-      return;
-    }
-
     try {
-      // Convert canvas to blob and download
-      canvas.toBlob((blob) => {
-        if (!blob) {
-          console.error("Failed to create blob from canvas");
-          return;
-        }
-        const url = URL.createObjectURL(blob);
-        const link = document.createElement("a");
-        link.download = `woodin-fathers-day-${shade.id}.png`;
-        link.href = url;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        URL.revokeObjectURL(url);
-      }, "image/png");
-    } catch (error) {
-      console.error("Download failed:", error);
-      // Fallback to data URL if blob fails
-      try {
-        const link = document.createElement("a");
-        link.download = `woodin-fathers-day-${shade.id}.png`;
-        link.href = canvas.toDataURL("image/png");
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-      } catch (fallbackError) {
-        console.error("Fallback download also failed:", fallbackError);
+      const cardImageUrl = shadeCardMap[shade.id];
+      if (!cardImageUrl) {
+        console.error("Card image not found for shade:", shade.id);
+        return;
       }
+
+      // Fetch the image and download it
+      fetch(cardImageUrl)
+        .then((response) => response.blob())
+        .then((blob) => {
+          const url = URL.createObjectURL(blob);
+          const link = document.createElement("a");
+          link.download = `woodin-fathers-day-${shade.id}.jpeg`;
+          link.href = url;
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+          URL.revokeObjectURL(url);
+        })
+        .catch((error) => {
+          console.error("Download failed:", error);
+          // Fallback: open in new tab
+          window.open(cardImageUrl, "_blank");
+        });
+    } catch (error) {
+      console.error("Download error:", error);
     }
   }
 
@@ -788,10 +626,11 @@ function ResultScreen({
                 ✕
               </button>
 
-              {/* Card Canvas Preview */}
+              {/* Card Image Preview */}
               <div className="overflow-y-auto max-h-[65vh] flex items-center justify-center p-4 bg-black">
-                <canvas
-                  ref={modalCanvasRef}
+                <img
+                  src={shadeCardMap[shade.id]}
+                  alt={`${shade.name} card design`}
                   style={{
                     width: "100%",
                     height: "auto",
@@ -799,7 +638,6 @@ function ResultScreen({
                     borderRadius: "0.75rem",
                     border: `2px solid ${shade.color}40`,
                     maxWidth: "100%",
-                    aspectRatio: "800/1100",
                   }}
                 />
               </div>
@@ -892,8 +730,6 @@ function ResultScreen({
         )}
       </AnimatePresence>
 
-      {/* Hidden canvas for card generation */}
-      <canvas ref={canvasRef} className="hidden" />
     </motion.div>
   );
 }
