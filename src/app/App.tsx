@@ -474,14 +474,15 @@ function ResultScreen({
             {shade.traits.map((trait) => (
               <span
                 key={trait}
-                className="px-3 py-1 rounded-full text-xs"
+                className="px-3 py-1.5 rounded-full text-xs"
                 style={{
-                  background: `${shade.color}20`,
-                  border: `1px solid ${shade.color}40`,
-                  color: shade.color,
+                  background: "rgba(255, 255, 255, 0.25)",
+                  border: "1px solid rgba(255, 255, 255, 0.4)",
+                  color: "#F5E6D0",
                   fontFamily: "'Nunito', sans-serif",
                   fontWeight: 600,
                   letterSpacing: "0.05em",
+                  backdropFilter: "blur(4px)",
                 }}
               >
                 {trait}
