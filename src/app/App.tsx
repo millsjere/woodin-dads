@@ -448,11 +448,41 @@ function ResultScreen({
 
   function handleDownloadCardFile() {
     const canvas = modalCanvasRef.current;
-    if (!canvas) return;
-    const link = document.createElement("a");
-    link.download = `woodin-fathers-day-${shade.id}.png`;
-    link.href = canvas.toDataURL("image/png");
-    link.click();
+    if (!canvas) {
+      console.error("Canvas ref not found");
+      return;
+    }
+
+    try {
+      // Convert canvas to blob and download
+      canvas.toBlob((blob) => {
+        if (!blob) {
+          console.error("Failed to create blob from canvas");
+          return;
+        }
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.download = `woodin-fathers-day-${shade.id}.png`;
+        link.href = url;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+      }, "image/png");
+    } catch (error) {
+      console.error("Download failed:", error);
+      // Fallback to data URL if blob fails
+      try {
+        const link = document.createElement("a");
+        link.download = `woodin-fathers-day-${shade.id}.png`;
+        link.href = canvas.toDataURL("image/png");
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      } catch (fallbackError) {
+        console.error("Fallback download also failed:", fallbackError);
+      }
+    }
   }
 
   function handleShareFacebook() {
