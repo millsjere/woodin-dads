@@ -366,6 +366,10 @@ function ResultScreen({
   }
 
   function handleViewPrints() {
+    // Save result state to localStorage before navigating
+    if (result) {
+      localStorage.setItem("shadeResult", JSON.stringify(result));
+    }
     navigate("/prints");
   }
 
@@ -761,6 +765,20 @@ export default function App() {
       return () => clearTimeout(timer);
     }
   }, [stage]);
+
+  // Restore result state from localStorage if user navigates back from prints page
+  useEffect(() => {
+    const savedResult = localStorage.getItem("shadeResult");
+    if (savedResult && !result) {
+      try {
+        const parsed = JSON.parse(savedResult);
+        setResult(parsed);
+        setStage("result");
+      } catch (error) {
+        console.error("Failed to restore result state:", error);
+      }
+    }
+  }, []);
 
   function handleReveal(text: string) {
     setStage("revealing");
