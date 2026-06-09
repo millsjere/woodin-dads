@@ -379,9 +379,9 @@ function ResultScreen({
         animate={{ scale: 1, opacity: 1 }}
         transition={{ delay: 0.2, duration: 0.6, type: "spring", stiffness: 200 }}
         style={{
-          background: `linear-gradient(135deg, ${shade.color}22, ${shade.colorSecondary}18)`,
-          border: `1px solid ${shade.color}40`,
-          boxShadow: `0 20px 60px ${shade.color}30`,
+          background: `linear-gradient(135deg, ${shade.color}, ${shade.colorSecondary})`,
+          border: `1px solid ${shade.color}60`,
+          boxShadow: `0 20px 60px ${shade.color}50`,
         }}
       >
         {/* Color band at top */}
