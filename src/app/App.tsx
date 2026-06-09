@@ -16,6 +16,22 @@ const shadeCardMap: Record<string, string> = {
 
 type Stage = "splash" | "input" | "revealing" | "result";
 
+// Helper to determine if text should be dark or light based on background color
+function getTextColorForShade(shadeId: string): { text: string; description: string; tagline: string } {
+  if (shadeId === "golden-glow") {
+    return {
+      text: "#1C0A00",
+      description: "#1C0A00",
+      tagline: "#1C0A00",
+    };
+  }
+  return {
+    text: "#F5E6D0",
+    description: "#C9B48A",
+    tagline: "currentColor", // uses shade.color
+  };
+}
+
 function SplashScreen() {
   return (
     <motion.div
@@ -435,7 +451,7 @@ function ResultScreen({
                 fontFamily: "'Playfair Display', serif",
                 fontSize: "clamp(1.6rem, 5vw, 2.2rem)",
                 fontWeight: 700,
-                color: "#F5E6D0",
+                color: getTextColorForShade(shade.id).text,
                 lineHeight: 1.15,
               }}
             >
@@ -445,7 +461,7 @@ function ResultScreen({
               style={{
                 fontFamily: "'Playfair Display', serif",
                 fontStyle: "italic",
-                color: shade.color,
+                color: getTextColorForShade(shade.id).tagline === "currentColor" ? shade.color : getTextColorForShade(shade.id).tagline,
                 fontSize: "0.95rem",
               }}
             >
@@ -463,7 +479,7 @@ function ResultScreen({
               fontFamily: "'Nunito', sans-serif",
               fontSize: "0.9rem",
               lineHeight: 1.75,
-              color: "#C9B48A",
+              color: getTextColorForShade(shade.id).description,
             }}
           >
             {shade.description}
