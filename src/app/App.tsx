@@ -759,15 +759,17 @@ function ResultScreen({
               </button>
 
               {/* Card Canvas Preview */}
-              <div className="overflow-y-auto max-h-[70vh] flex items-center justify-center p-4">
+              <div className="overflow-y-auto max-h-[65vh] flex items-center justify-center p-4 bg-black">
                 <canvas
                   ref={modalCanvasRef}
                   style={{
-                    maxWidth: "100%",
-                    maxHeight: "100%",
+                    width: "100%",
+                    height: "auto",
                     display: "block",
-                    borderRadius: "1rem",
+                    borderRadius: "0.75rem",
                     border: `2px solid ${shade.color}40`,
+                    maxWidth: "100%",
+                    aspectRatio: "800/1100",
                   }}
                 />
               </div>
