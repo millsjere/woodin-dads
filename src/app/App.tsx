@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { useNavigate } from "react-router";
 import { motion, AnimatePresence } from "motion/react";
 import { WoodinLogo } from "./components/WoodinLogo";
 import { AfricanPatternBg } from "./components/AfricanPattern";
@@ -268,6 +269,7 @@ function ResultScreen({
   percentage: number;
   onReset: () => void;
 }) {
+  const navigate = useNavigate();
   const [cardVisible, setCardVisible] = useState(false);
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -444,7 +446,7 @@ function ResultScreen({
   }
 
   function handleViewPrints() {
-    window.open("https://woodinfashion.com", "_blank");
+    navigate("/prints");
   }
 
   return (
