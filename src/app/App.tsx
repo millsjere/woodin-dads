@@ -271,16 +271,16 @@ function ResultScreen({
 }) {
   const navigate = useNavigate();
   const [cardVisible, setCardVisible] = useState(false);
+  const [showCardModal, setShowCardModal] = useState(false);
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const modalCanvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
     const timer = setTimeout(() => setCardVisible(true), 400);
     return () => clearTimeout(timer);
   }, []);
 
-  function handleDownloadCard() {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
+  function drawCardToCanvas(canvas: HTMLCanvasElement) {
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
@@ -437,12 +437,48 @@ function ResultScreen({
     ctx.font = "500 11px Arial";
     ctx.textAlign = "center";
     ctx.fillText("woodin.com  •  #ShadesOfADad", W / 2, H - 25);
+  }
 
-    // Download
+  function handleDownloadCard() {
+    const canvas = modalCanvasRef.current;
+    if (!canvas) return;
+    drawCardToCanvas(canvas);
+    setShowCardModal(true);
+  }
+
+  function handleDownloadCardFile() {
+    const canvas = modalCanvasRef.current;
+    if (!canvas) return;
     const link = document.createElement("a");
     link.download = `woodin-fathers-day-${shade.id}.png`;
     link.href = canvas.toDataURL("image/png");
     link.click();
+  }
+
+  function handleShareFacebook() {
+    const canvas = modalCanvasRef.current;
+    if (!canvas) return;
+    const imageUrl = canvas.toDataURL("image/png");
+    const shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}&quote=I%20discovered%20my%20Father%27s%20Day%20shade:%20${shade.name}%20from%20Woodin!`;
+    window.open(shareUrl, "_blank", "width=600,height=400");
+  }
+
+  function handleShareWhatsApp() {
+    const canvas = modalCanvasRef.current;
+    if (!canvas) return;
+    const message = `I just discovered my Father's Day shade: "${shade.name} — ${shade.tagline}" from Woodin! 🎨 What's yours? Try the Shades of A Dad quiz!`;
+    const waUrl = `https://wa.me/?text=${encodeURIComponent(message)}`;
+    window.open(waUrl, "_blank");
+  }
+
+  async function handleShareInstagram() {
+    const message = `Just discovered my Father's Day shade: "${shade.name}" from Woodin! 🎨\n\nFind your shade at: ${window.location.href}\n\n#ShadesOfADad #Woodin #FathersDay`;
+    try {
+      await navigator.clipboard.writeText(message);
+      alert("Caption copied! Open Instagram and paste it in your story or post.");
+    } catch {
+      alert("Copy failed. Please try again.");
+    }
   }
 
   function handleViewPrints() {
@@ -684,6 +720,145 @@ function ResultScreen({
           ↩ Try a different description
         </button>
       </motion.div>
+
+      {/* Card Preview Modal */}
+      <AnimatePresence>
+        {showCardModal && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="fixed inset-0 z-50 flex items-center justify-center p-4"
+            style={{ background: "rgba(0,0,0,0.85)", backdropFilter: "blur(8px)" }}
+            onClick={() => setShowCardModal(false)}
+          >
+            <motion.div
+              initial={{ scale: 0.92, opacity: 0, y: 20 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.92, opacity: 0, y: 20 }}
+              transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+              className="relative rounded-3xl overflow-hidden w-full max-w-sm bg-black"
+              style={{ border: `1px solid ${shade.color}40` }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Close button */}
+              <button
+                onClick={() => setShowCardModal(false)}
+                className="absolute top-3 right-3 z-10 w-8 h-8 flex items-center justify-center rounded-full transition-colors"
+                style={{
+                  background: "rgba(28,10,0,0.8)",
+                  border: `1px solid ${shade.color}40`,
+                  color: "#C9893A",
+                  cursor: "pointer",
+                }}
+                onMouseEnter={(e) => (e.currentTarget.style.background = `${shade.color}30`)}
+                onMouseLeave={(e) => (e.currentTarget.style.background = "rgba(28,10,0,0.8)")}
+              >
+                ✕
+              </button>
+
+              {/* Card Canvas Preview */}
+              <div className="overflow-y-auto max-h-[70vh] flex items-center justify-center p-4">
+                <canvas
+                  ref={modalCanvasRef}
+                  style={{
+                    maxWidth: "100%",
+                    maxHeight: "100%",
+                    display: "block",
+                    borderRadius: "1rem",
+                    border: `2px solid ${shade.color}40`,
+                  }}
+                />
+              </div>
+
+              {/* Action Buttons */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.15, duration: 0.3 }}
+                className="flex flex-col gap-2 p-4"
+                style={{ borderTop: `1px solid ${shade.color}25` }}
+              >
+                {/* Download Button */}
+                <motion.button
+                  onClick={handleDownloadCardFile}
+                  className="w-full rounded-full py-3 px-4 font-bold flex items-center justify-center gap-2 transition-all"
+                  style={{
+                    background: `linear-gradient(135deg, ${shade.color}, ${shade.colorSecondary})`,
+                    color: "#1C0A00",
+                    fontFamily: "'Nunito', sans-serif",
+                    fontSize: "0.9rem",
+                    cursor: "pointer",
+                    border: "none",
+                  }}
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.97 }}
+                >
+                  ⬇ Download Card
+                </motion.button>
+
+                {/* Share Section */}
+                <div className="flex gap-2">
+                  {/* WhatsApp */}
+                  <motion.button
+                    onClick={handleShareWhatsApp}
+                    className="flex-1 rounded-full py-2.5 px-3 font-bold flex items-center justify-center gap-1 transition-all"
+                    style={{
+                      background: "#25D366",
+                      color: "#fff",
+                      fontFamily: "'Nunito', sans-serif",
+                      fontSize: "0.75rem",
+                      cursor: "pointer",
+                      border: "none",
+                    }}
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.97 }}
+                  >
+                    <span>💬</span> WhatsApp
+                  </motion.button>
+
+                  {/* Facebook */}
+                  <motion.button
+                    onClick={handleShareFacebook}
+                    className="flex-1 rounded-full py-2.5 px-3 font-bold flex items-center justify-center gap-1 transition-all"
+                    style={{
+                      background: "#1877F2",
+                      color: "#fff",
+                      fontFamily: "'Nunito', sans-serif",
+                      fontSize: "0.75rem",
+                      cursor: "pointer",
+                      border: "none",
+                    }}
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.97 }}
+                  >
+                    <span>f</span> Facebook
+                  </motion.button>
+
+                  {/* Instagram */}
+                  <motion.button
+                    onClick={handleShareInstagram}
+                    className="flex-1 rounded-full py-2.5 px-3 font-bold flex items-center justify-center gap-1 transition-all"
+                    style={{
+                      background: "linear-gradient(135deg, #fd5949, #d6249f, #285AEB)",
+                      color: "#fff",
+                      fontFamily: "'Nunito', sans-serif",
+                      fontSize: "0.75rem",
+                      cursor: "pointer",
+                      border: "none",
+                    }}
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.97 }}
+                  >
+                    <span>📸</span> Instagram
+                  </motion.button>
+                </div>
+              </motion.div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Hidden canvas for card generation */}
       <canvas ref={canvasRef} className="hidden" />
