@@ -231,6 +231,149 @@ export default function PrintsPage() {
         )}
       </AnimatePresence>
 
+      {/* ── Fabrics Section ── */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+        className="relative z-10 flex flex-col items-center text-center px-6 py-12 gap-3"
+      >
+        <p
+          style={{
+            fontFamily: "'Nunito', sans-serif",
+            fontSize: "0.68rem",
+            letterSpacing: "0.35em",
+            color: "#C9893A",
+            textTransform: "uppercase",
+          }}
+        >
+          Premium Collection
+        </p>
+        <h2
+          style={{
+            fontFamily: "'Playfair Display', serif",
+            fontSize: "clamp(1.8rem, 5vw, 2.8rem)",
+            fontWeight: 700,
+            color: "#F5E6D0",
+            lineHeight: 1.2,
+          }}
+        >
+          Woodin <span style={{ color: "#C9893A", fontStyle: "italic" }}>Fabrics</span>
+        </h2>
+        <p
+          className="max-w-xs"
+          style={{ fontSize: "0.88rem", lineHeight: 1.7, color: "#B8965A" }}
+        >
+          Discover our Tendresse Collection — elegant fabrics celebrating timeless style.
+        </p>
+        <div className="w-16 h-px mt-1" style={{ background: "rgba(201,137,58,0.35)" }} />
+      </motion.div>
+
+      {/* ── Fabrics Grid ── */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.25, duration: 0.5 }}
+        className="relative z-10 px-4 pb-24"
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fill, minmax(160px, 1fr))",
+          gap: "12px",
+          maxWidth: "1024px",
+          margin: "0 auto",
+        }}
+      >
+        {[
+          { id: "83000A", name: "Tendresse Azure" },
+          { id: "83004A", name: "Tendresse Amber" },
+          { id: "83006A", name: "Tendresse Earth" },
+          { id: "83008A", name: "Tendresse Ruby" },
+          { id: "83010A", name: "Tendresse Sage" },
+        ].map(({ id, name }, i) => (
+          <motion.a
+            key={id}
+            href={`https://woodinfashion.com/product/${id.toLowerCase()}/`}
+            target="_blank"
+            rel="noopener noreferrer"
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.05 * i, duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+            whileHover={{ scale: 1.03, boxShadow: "0 12px 36px rgba(201,137,58,0.3)" }}
+            whileTap={{ scale: 0.97 }}
+            className="relative overflow-hidden rounded-2xl flex flex-col"
+            style={{
+              background: "rgba(255,255,255,0.04)",
+              border: "1px solid rgba(201,137,58,0.22)",
+              cursor: "pointer",
+              padding: 0,
+              textAlign: "left",
+              textDecoration: "none",
+            }}
+          >
+            <div className="w-full" style={{ aspectRatio: "3/4", overflow: "hidden", background: "rgba(201,137,58,0.1)" }}>
+              <img
+                src={`https://woodinfashion.com/wp-content/uploads/2026/05/${id}-300x300.jpg`}
+                alt={name}
+                loading="lazy"
+                className="w-full h-full"
+                style={{ objectFit: "cover", display: "block" }}
+              />
+            </div>
+            <div
+              className="px-3 py-2"
+              style={{ borderTop: "1px solid rgba(201,137,58,0.15)" }}
+            >
+              <p
+                style={{
+                  fontFamily: "'Nunito', sans-serif",
+                  fontSize: "0.72rem",
+                  color: "#C9893A",
+                  whiteSpace: "nowrap",
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                  fontWeight: 600,
+                }}
+              >
+                {name}
+              </p>
+            </div>
+          </motion.a>
+        ))}
+      </motion.div>
+
+      {/* ── View All Fabrics Link ── */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.5, duration: 0.6 }}
+        className="relative z-10 flex justify-center pb-12"
+      >
+        <a
+          href="https://woodinfashion.com/fabrics/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="px-8 py-3 rounded-full font-bold transition-all"
+          style={{
+            background: "linear-gradient(135deg, #C9893A, #E05A2B)",
+            color: "#1C0A00",
+            fontFamily: "'Nunito', sans-serif",
+            fontSize: "0.9rem",
+            textDecoration: "none",
+            boxShadow: "0 8px 32px rgba(201,137,58,0.4)",
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.transform = "scale(1.05)";
+            e.currentTarget.style.boxShadow = "0 12px 40px rgba(201,137,58,0.5)";
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.transform = "scale(1)";
+            e.currentTarget.style.boxShadow = "0 8px 32px rgba(201,137,58,0.4)";
+          }}
+        >
+          Explore All Fabrics →
+        </a>
+      </motion.div>
+
       {/* ── WhatsApp floating button ── */}
       <WhatsAppFloat />
     </div>
