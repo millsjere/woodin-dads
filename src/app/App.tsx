@@ -655,8 +655,9 @@ function ResultScreen({
               {/* Card Image Preview */}
               <div className="overflow-y-auto max-h-[65vh] flex items-center justify-center p-4 bg-black">
                 <img
-                  src={shadeCardMap[shade.id]}
+                  src={shadeCardMap[shade.id] || ""}
                   alt={`${shade.name} card design`}
+                  loading="eager"
                   style={{
                     width: "100%",
                     height: "auto",
@@ -664,6 +665,10 @@ function ResultScreen({
                     borderRadius: "0.75rem",
                     border: `2px solid ${shade.color}40`,
                     maxWidth: "100%",
+                  }}
+                  onError={(e) => {
+                    console.error("Card image failed to load:", shade.id, shadeCardMap[shade.id]);
+                    e.currentTarget.style.display = "none";
                   }}
                 />
               </div>
