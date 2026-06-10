@@ -385,7 +385,7 @@ function ResultScreen({
 
   return (
     <motion.div
-      className="flex flex-col items-center h-full px-5 py-8 gap-6 max-w-lg mx-auto w-full overflow-y-auto"
+      className="flex flex-col items-center min-h-full px-4 sm:px-5 py-6 sm:py-8 gap-4 sm:gap-6 max-w-lg mx-auto w-full overflow-y-auto"
       initial={{ opacity: 0, y: 40 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0 }}
@@ -420,7 +420,7 @@ function ResultScreen({
           style={{ background: `linear-gradient(90deg, ${shade.color}, ${shade.colorSecondary})` }}
         />
 
-        <div className="p-6 flex flex-col items-center gap-5">
+        <div className="p-4 sm:p-6 flex flex-col items-center gap-3 sm:gap-5">
           {/* Shade circle with percentage */}
           <div className="relative flex items-center justify-center">
             <motion.div
