@@ -4,14 +4,24 @@ import { motion, AnimatePresence } from "motion/react";
 import { WoodinLogo } from "./components/WoodinLogo";
 import { AfricanPatternBg } from "./components/AfricanPattern";
 import { matchShade, type WoodinShade } from "./components/shades-data";
+// @ts-ignore - Vite handles ?url imports correctly at build time
+import azureCardUrl from "../cards/Father's Day Card1-azure.jpeg?url";
+// @ts-ignore
+import terraCardUrl from "../cards/Father's Day Card1-terra.jpeg?url";
+// @ts-ignore
+import goldenCardUrl from "../cards/Father's Day Card1-golden.jpeg?url";
+// @ts-ignore
+import crimsonCardUrl from "../cards/Father's Day Card1-crimson.jpeg?url";
+// @ts-ignore
+import monochromeCardUrl from "../cards/Father's Day Card-monochrome.jpeg?url";
 
-// Map shade IDs to card image paths - Vite will resolve these at build time
+// Map shade IDs to card image URLs
 const shadeCardMap: Record<string, string> = {
-  "azure-anchor": new URL("../cards/Father's Day Card1-azure.jpeg", import.meta.url).href,
-  "terra-firma": new URL("../cards/Father's Day Card1-terra.jpeg", import.meta.url).href,
-  "golden-glow": new URL("../cards/Father's Day Card1-golden.jpeg", import.meta.url).href,
-  "crimson-core": new URL("../cards/Father's Day Card1-crimson.jpeg", import.meta.url).href,
-  "monochrome-mystery": new URL("../cards/Father's Day Card-monochrome.jpeg", import.meta.url).href,
+  "azure-anchor": azureCardUrl,
+  "terra-firma": terraCardUrl,
+  "golden-glow": goldenCardUrl,
+  "crimson-core": crimsonCardUrl,
+  "monochrome-mystery": monochromeCardUrl,
 };
 
 // Debug: Log card image paths on load
