@@ -19,6 +19,11 @@ const shadeCardMap: Record<string, string> = {
   "monochrome-mystery": monochromeCardImage,
 };
 
+// Debug: Log card image paths on load
+if (typeof window !== "undefined") {
+  console.log("Card images loaded:", shadeCardMap);
+}
+
 type Stage = "splash" | "input" | "revealing" | "result";
 
 // Helper to determine if text should be dark or light based on background color
