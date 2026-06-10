@@ -814,6 +814,8 @@ export default function App() {
   }
 
   function handleReset() {
+    // Clear saved state to allow fresh quiz
+    localStorage.removeItem("shadeResult");
     setResult(null);
     setStage("input");
   }
