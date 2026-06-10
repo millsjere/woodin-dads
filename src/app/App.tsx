@@ -373,9 +373,7 @@ function ResultScreen({
 
   function handleViewPrints() {
     // Save result state to localStorage before navigating
-    if (result) {
-      localStorage.setItem("shadeResult", JSON.stringify(result));
-    }
+    localStorage.setItem("shadeResult", JSON.stringify({ shade, percentage }));
     navigate("/prints");
   }
 
