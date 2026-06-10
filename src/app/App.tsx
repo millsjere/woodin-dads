@@ -379,7 +379,7 @@ function ResultScreen({
 
   return (
     <motion.div
-      className="flex flex-col items-center min-h-full px-4 sm:px-5 py-6 sm:py-8 gap-4 sm:gap-6 max-w-lg mx-auto w-full overflow-y-auto"
+      className="flex flex-col items-center min-h-full px-4 sm:px-5 pt-8 sm:pt-10 pb-6 sm:pb-8 gap-4 sm:gap-6 max-w-lg mx-auto w-full overflow-y-auto"
       initial={{ opacity: 0, y: 40 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0 }}
