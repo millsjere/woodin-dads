@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router";
 import { motion, AnimatePresence } from "motion/react";
+import { Download, MessageCircle, Facebook, Instagram, RotateCcw, Needle } from "lucide-react";
 import { WoodinLogo } from "./components/WoodinLogo";
 import { AfricanPatternBg } from "./components/AfricanPattern";
 import { matchShade, type WoodinShade } from "./components/shades-data";
@@ -421,8 +422,8 @@ function ResultScreen({
             <motion.div
               className="absolute rounded-full"
               style={{
-                width: 140,
-                height: 140,
+                width: "clamp(100px, 25vw, 140px)",
+                height: "clamp(100px, 25vw, 140px)",
                 background: `radial-gradient(circle, ${shade.colorSecondary}60, ${shade.color}40)`,
                 filter: "blur(20px)",
               }}
@@ -432,15 +433,15 @@ function ResultScreen({
             <div
               className="relative rounded-full flex flex-col items-center justify-center"
               style={{
-                width: 120,
-                height: 120,
+                width: "clamp(85px, 20vw, 120px)",
+                height: "clamp(85px, 20vw, 120px)",
                 background: `linear-gradient(135deg, ${shade.color}, ${shade.colorSecondary})`,
                 boxShadow: `0 8px 32px ${shade.color}60`,
               }}
             >
               <span
                 className="text-[#1C0A00]"
-                style={{ fontFamily: "'Playfair Display', serif", fontSize: "2rem", fontWeight: 900, lineHeight: 1 }}
+                style={{ fontFamily: "'Playfair Display', serif", fontSize: "clamp(1.4rem, 6vw, 2rem)", fontWeight: 900, lineHeight: 1 }}
               >
                 {percentage}%
               </span>
@@ -570,7 +571,10 @@ function ResultScreen({
             animate={{ x: ["-100%", "100%"] }}
             transition={{ duration: 2.5, repeat: Infinity, ease: "linear" }}
           />
-          <span className="relative">🪡 View Woodin Prints</span>
+          <span className="relative flex items-center gap-2">
+            <Needle size={20} />
+            View Woodin Prints
+          </span>
         </motion.button>
 
         {/* Download Card */}
@@ -594,7 +598,10 @@ function ResultScreen({
           }}
           whileTap={{ scale: 0.97 }}
         >
-          ⬇ Download Woodin Card
+          <span className="flex items-center gap-2">
+            <Download size={18} />
+            Download Woodin Card
+          </span>
         </motion.button>
 
         {/* Try Again */}
@@ -611,7 +618,10 @@ function ResultScreen({
           onMouseEnter={(e) => (e.currentTarget.style.color = "#C9893A")}
           onMouseLeave={(e) => (e.currentTarget.style.color = "#6B4A2A")}
         >
-          ↩ Try a different description
+          <span className="flex items-center gap-2 justify-center">
+            <RotateCcw size={16} />
+            Try a different description
+          </span>
         </button>
       </motion.div>
 
@@ -696,7 +706,10 @@ function ResultScreen({
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.97 }}
                 >
-                  ⬇ Download Card
+                  <span className="flex items-center gap-2">
+                    <Download size={18} />
+                    Download Card
+                  </span>
                 </motion.button>
 
                 {/* Share Section */}
@@ -716,7 +729,8 @@ function ResultScreen({
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.97 }}
                   >
-                    <span>💬</span> WhatsApp
+                    <MessageCircle size={16} />
+                    WhatsApp
                   </motion.button>
 
                   {/* Facebook */}
@@ -734,7 +748,8 @@ function ResultScreen({
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.97 }}
                   >
-                    <span>f</span> Facebook
+                    <Facebook size={16} />
+                    Facebook
                   </motion.button>
 
                   {/* Instagram */}
@@ -752,7 +767,8 @@ function ResultScreen({
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.97 }}
                   >
-                    <span>📸</span> Instagram
+                    <Instagram size={16} />
+                    Instagram
                   </motion.button>
                 </div>
               </motion.div>
