@@ -4,14 +4,19 @@ import { motion, AnimatePresence } from "motion/react";
 import { WoodinLogo } from "./components/WoodinLogo";
 import { AfricanPatternBg } from "./components/AfricanPattern";
 import { matchShade, type WoodinShade } from "./components/shades-data";
+import azureCardImage from "../cards/Father's Day Card1-azure.jpeg";
+import terraCardImage from "../cards/Father's Day Card1-terra.jpeg";
+import goldenCardImage from "../cards/Father's Day Card1-golden.jpeg";
+import crimsonCardImage from "../cards/Father's Day Card1-crimson.jpeg";
+import monochromeCardImage from "../cards/Father's Day Card-monochrome.jpeg";
 
-// Map shade IDs to card image paths
+// Map shade IDs to card image imports
 const shadeCardMap: Record<string, string> = {
-  "azure-anchor": "/src/cards/Father's Day Card1-azure.jpeg",
-  "terra-firma": "/src/cards/Father's Day Card1-terra.jpeg",
-  "golden-glow": "/src/cards/Father's Day Card1-golden.jpeg",
-  "crimson-core": "/src/cards/Father's Day Card1-crimson.jpeg",
-  "monochrome-mystery": "/src/cards/Father's Day Card-monochrome.jpeg",
+  "azure-anchor": azureCardImage,
+  "terra-firma": terraCardImage,
+  "golden-glow": goldenCardImage,
+  "crimson-core": crimsonCardImage,
+  "monochrome-mystery": monochromeCardImage,
 };
 
 type Stage = "splash" | "input" | "revealing" | "result";
