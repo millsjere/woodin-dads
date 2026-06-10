@@ -251,7 +251,7 @@ function InputScreen({ onReveal }: { onReveal: (text: string) => void }) {
 function RevealingScreen() {
   return (
     <motion.div
-      className="flex flex-col items-center justify-center h-full gap-8"
+      className="flex flex-col items-center justify-center min-h-screen pt-12 sm:pt-20 pb-8 gap-8"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
