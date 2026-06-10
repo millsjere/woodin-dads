@@ -1,16 +1,32 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { WoodinLogo } from "./WoodinLogo";
+import { MessageCircle } from "lucide-react";
 
-const WA_LINK =
-  "https://wa.me/?text=Hi%2C%20I%27m%20interested%20in%20Woodin%20prints%20for%20Father%27s%20Day!";
+const LOCATIONS = [
+  {
+    name: "Woodin Osu",
+    phone: "243446558",
+    description: "Osu Branch",
+  },
+  {
+    name: "Woodin Accra Mall",
+    phone: "244462475",
+    description: "Accra Mall Branch",
+  },
+];
 
 export function WhatsAppFloat() {
   const [open, setOpen] = useState(false);
 
+  const handleLocationClick = (phone: string) => {
+    const waUrl = `https://wa.me/+233${phone}?text=Hi%2C%20I%27m%20interested%20in%20Woodin%20prints%20for%20Father%27s%20Day!`;
+    window.open(waUrl, "_blank");
+  };
+
   return (
     <div className="fixed bottom-6 right-5 z-50 flex flex-col items-end gap-3">
-      {/* Popup card */}
+      {/* Locations card */}
       <AnimatePresence>
         {open && (
           <motion.div
@@ -18,7 +34,7 @@ export function WhatsAppFloat() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 12, scale: 0.95 }}
             transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
-            className="rounded-2xl p-4 w-72 shadow-2xl"
+            className="rounded-2xl p-4 w-80 shadow-2xl"
             style={{
               background: "#1C0A00",
               border: "1px solid rgba(201,137,58,0.35)",
@@ -49,37 +65,72 @@ export function WhatsAppFloat() {
                   textTransform: "uppercase",
                 }}
               >
-                Woodin
+                Woodin Locations
               </span>
             </div>
 
             <p
               style={{
                 fontFamily: "'Nunito', sans-serif",
-                fontSize: "0.88rem",
-                lineHeight: 1.6,
+                fontSize: "0.85rem",
+                lineHeight: 1.5,
                 color: "#F5E6D0",
-                marginBottom: "0.9rem",
+                marginBottom: "1.2rem",
               }}
             >
-              Hey! Interested in our Father's Day prints? Chat with us on WhatsApp — we'd love to help you find the perfect shade.
+              Chat with us at your nearest location
             </p>
 
-            <a
-              href={WA_LINK}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center justify-center gap-2 w-full rounded-full py-2.5 px-4 font-bold text-sm transition-opacity hover:opacity-90"
-              style={{
-                background: "#25D366",
-                color: "#fff",
-                fontFamily: "'Nunito', sans-serif",
-                textDecoration: "none",
-              }}
-            >
-              <WhatsAppIcon />
-              Chat on WhatsApp →
-            </a>
+            <div className="flex flex-col gap-2">
+              {LOCATIONS.map((location) => (
+                <motion.button
+                  key={location.phone}
+                  onClick={() => handleLocationClick(location.phone)}
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="w-full rounded-lg p-3 flex items-center justify-between transition-all"
+                  style={{
+                    background: "rgba(201,137,58,0.15)",
+                    border: "1px solid rgba(201,137,58,0.3)",
+                    cursor: "pointer",
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.background = "rgba(201,137,58,0.25)";
+                    e.currentTarget.style.borderColor = "rgba(201,137,58,0.5)";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.background = "rgba(201,137,58,0.15)";
+                    e.currentTarget.style.borderColor = "rgba(201,137,58,0.3)";
+                  }}
+                >
+                  <div className="text-left">
+                    <p
+                      style={{
+                        fontFamily: "'Nunito', sans-serif",
+                        fontWeight: 700,
+                        fontSize: "0.9rem",
+                        color: "#F5E6D0",
+                        margin: 0,
+                      }}
+                    >
+                      {location.name}
+                    </p>
+                    <p
+                      style={{
+                        fontFamily: "'Nunito', sans-serif",
+                        fontSize: "0.75rem",
+                        color: "#B8965A",
+                        margin: 0,
+                        marginTop: "0.2rem",
+                      }}
+                    >
+                      {location.description}
+                    </p>
+                  </div>
+                  <MessageCircle size={20} color="#25D366" />
+                </motion.button>
+              ))}
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
@@ -96,7 +147,7 @@ export function WhatsAppFloat() {
           cursor: "pointer",
           boxShadow: "0 6px 24px rgba(37,211,102,0.45)",
         }}
-        aria-label="Chat on WhatsApp"
+        aria-label="Contact us"
       >
         <WhatsAppIcon size={28} color="#fff" />
       </motion.button>
