@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router";
 import { motion, AnimatePresence } from "motion/react";
-import { Download, MessageCircle, Facebook, Instagram, RotateCcw, Needle } from "lucide-react";
+import { Download, MessageCircle, Facebook, Instagram, RotateCcw, Sparkles } from "lucide-react";
 import { WoodinLogo } from "./components/WoodinLogo";
 import { AfricanPatternBg } from "./components/AfricanPattern";
 import { matchShade, type WoodinShade } from "./components/shades-data";
@@ -572,7 +572,7 @@ function ResultScreen({
             transition={{ duration: 2.5, repeat: Infinity, ease: "linear" }}
           />
           <span className="relative flex items-center gap-2">
-            <Needle size={20} />
+            <Sparkles size={20} />
             View Woodin Prints
           </span>
         </motion.button>
