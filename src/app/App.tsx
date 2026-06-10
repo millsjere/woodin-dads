@@ -569,7 +569,7 @@ function ResultScreen({
             animate={{ x: ["-100%", "100%"] }}
             transition={{ duration: 2.5, repeat: Infinity, ease: "linear" }}
           />
-          <span className="relative flex items-center gap-2">
+          <span className="relative flex items-center justify-center gap-2">
             <Sparkles size={20} />
             View Woodin Prints
           </span>
@@ -596,7 +596,7 @@ function ResultScreen({
           }}
           whileTap={{ scale: 0.97 }}
         >
-          <span className="flex items-center gap-2">
+          <span className="flex items-center justify-center gap-2">
             <Download size={18} />
             Download Woodin Card
           </span>
